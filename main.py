@@ -15,9 +15,9 @@ def ensure_output_folder():
 
 def validate_file(file_path):
     if not file_path.endswith('.xlsx'):
-        raise ValueError("File must be an .xlsx Excel file")
+        raise ValueError("Файл должен быть в формате .xlsx")
     if not Path(file_path).exists():
-        raise FileNotFoundError("File not found")
+        raise FileNotFoundError("Файл не найден")
     return file_path
 
 
@@ -72,7 +72,7 @@ def shuffle_excel_rows(file_path, start_row, end_row, start_col, end_col):
 
         if start_row < 1 or end_row < start_row or end_row > max_rows or \
            start_col < 1 or end_col < start_col or end_col > max_cols:
-            raise ValueError(f"Invalid range. Rows: 1-{max_rows}, Columns: 1-{max_cols}")
+            raise ValueError(f"Неверный диапазон. Строки: 1-{max_rows}, Столбцы: 1-{max_cols}")
 
         data = []
         for row in range(start_row, end_row + 1):
@@ -96,9 +96,9 @@ def shuffle_excel_rows(file_path, start_row, end_row, start_col, end_col):
         output_dir = ensure_output_folder()
         output_file = output_dir / f"{Path(file_path).stem}_shuffled.xlsx"
         wb.save(output_file)
-        return f"Shuffled file saved as {output_file}"
+        return f"Перемешанный файл сохранен как {output_file}"
     except Exception as e:
-        return f"Error: {str(e)}"
+        return f"Ошибка: {str(e)}"
 
 
 class ExcelShufflerApp:
@@ -112,27 +112,27 @@ class ExcelShufflerApp:
         main_frame.pack(fill=BOTH, expand=True)
 
         # Title
-        ttk.Label(main_frame, text="Excel Row Shuffler", font=("Arial", 16, "bold")).pack(pady=10)
+        ttk.Label(main_frame, text="Перемешиватель строк Excel", font=("Arial", 16, "bold")).pack(pady=10)
 
         # File selection frame
         file_frame = ttk.Frame(main_frame)
         file_frame.pack(fill=X, pady=5)
         self.file_path = tk.StringVar()
         ttk.Entry(file_frame, textvariable=self.file_path, width=30).pack(side=LEFT, padx=5)
-        ttk.Button(file_frame, text="Browse", command=self.browse_file, bootstyle=SECONDARY).pack(side=LEFT)
+        ttk.Button(file_frame, text="Обзор", command=self.browse_file, bootstyle=SECONDARY).pack(side=LEFT)
 
         # Row range
-        ttk.Label(main_frame, text="Row Range (e.g., 1-10):").pack(anchor=W, pady=5)
+        ttk.Label(main_frame, text="Диапазон строк (например, 1-10):").pack(anchor=W, pady=5)
         self.row_range = ttk.Entry(main_frame, width=20)
         self.row_range.pack(anchor=W, padx=5)
 
         # Column range
-        ttk.Label(main_frame, text="Column Range (e.g., 1-5):").pack(anchor=W, pady=5)
+        ttk.Label(main_frame, text="Диапазон столбцов (например, 1-5):").pack(anchor=W, pady=5)
         self.col_range = ttk.Entry(main_frame, width=20)
         self.col_range.pack(anchor=W, padx=5)
 
         # Shuffle button
-        ttk.Button(main_frame, text="Shuffle Rows", command=self.run_shuffle,
+        ttk.Button(main_frame, text="Перемешать строки", command=self.run_shuffle,
                   bootstyle="primary", width=20, style="large.TButton").pack(pady=20)
 
         # Status label
@@ -145,7 +145,7 @@ class ExcelShufflerApp:
 
 
     def browse_file(self):
-        file_path = filedialog.askopenfilename(filetypes=[("Excel files", "*.xlsx")])
+        file_path = filedialog.askopenfilename(filetypes=[("Файлы Excel", "*.xlsx")])
         if file_path:
             self.file_path.set(file_path)
 
@@ -154,13 +154,13 @@ class ExcelShufflerApp:
         try:
             file_path = self.file_path.get()
             if not file_path:
-                raise ValueError("Please select a file")
+                raise ValueError("Выберите файл")
             start_row, end_row = map(int, self.row_range.get().split('-'))
             start_col, end_col = map(int, self.col_range.get().split('-'))
             result = shuffle_excel_rows(file_path, start_row, end_row, start_col, end_col)
             self.status.config(text=result, bootstyle=SUCCESS)
         except Exception as e:
-            self.status.config(text=f"Error: {str(e)}", bootstyle=DANGER)
+            self.status.config(text=f"Ошибка: {str(e)}", bootstyle=DANGER)
 
 
 if __name__ == "__main__":
