@@ -1,7 +1,5 @@
 import openpyxl
-from openpyxl.utils import get_column_letter
 from random import shuffle
-import os
 from pathlib import Path
 import tkinter as tk
 from tkinter import filedialog
